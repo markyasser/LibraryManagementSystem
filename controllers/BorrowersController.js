@@ -1,4 +1,4 @@
-const Borrower = require("../models/Borrower");
+const Borrower = require("../models/borrowers");
 
 // Create a new borrower
 exports.createBorrower = async (req, res, next) => {
