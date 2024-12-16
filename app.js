@@ -33,10 +33,10 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5000",
+        url: "http://localhost:5000", // Local server (Development)
       },
       {
-        url: "http://172.161.88.247:5000",
+        url: process.env.TEST_SERVER || "http://localhost" + ":5000", // Test server (Staging)
       },
     ],
   },
