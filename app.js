@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 
 app.use("/books", booksRoutes);
 app.use("/borrowers", borrowersRoutes);
+app.use("/borrowedBooks", borrowedBookRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
