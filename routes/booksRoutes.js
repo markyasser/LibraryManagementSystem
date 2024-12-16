@@ -2,6 +2,44 @@ const express = require("express");
 const booksController = require("../controllers/BooksController");
 
 const router = express.Router();
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Book:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Unique identifier for the book.
+ *         title:
+ *           type: string
+ *           description: The title of the book.
+ *         author:
+ *           type: string
+ *           description: The author of the book.
+ *         ISBN:
+ *           type: string
+ *           description: The ISBN of the book.
+ *         availableQty:
+ *           type: integer
+ *           description: The quantity of books available in the library.
+ *           default: 0
+ *         location:
+ *           type: string
+ *           description: The location of the book in the library.
+ *       required:
+ *         - title
+ *         - author
+ *         - ISBN
+ *       example:
+ *         id: 1
+ *         title: "The Great Gatsby"
+ *         author: "F. Scott Fitzgerald"
+ *         ISBN: "9780743273565"
+ *         availableQty: 10
+ *         location: "Shelf 3A"
+ */
 
 /**
  * @swagger

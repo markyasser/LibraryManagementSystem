@@ -2,6 +2,78 @@ const express = require("express");
 const borrowersController = require("../controllers/BorrowersController");
 
 const router = express.Router();
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     BorrowedBook:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Unique identifier for the borrowed book entry.
+ *         bookId:
+ *           type: integer
+ *           description: The ID of the book being borrowed.
+ *         borrowerId:
+ *           type: integer
+ *           description: The ID of the borrower who borrowed the book.
+ *         borrowDate:
+ *           type: string
+ *           format: date-time
+ *           description: The date when the book was borrowed.
+ *           default: "2024-12-16T12:00:00Z"
+ *         dueDate:
+ *           type: string
+ *           format: date-time
+ *           description: The date when the book is due to be returned.
+ *         returnDate:
+ *           type: string
+ *           format: date-time
+ *           description: The date when the book was returned.
+ *       required:
+ *         - bookId
+ *         - borrowerId
+ *       example:
+ *         id: 1
+ *         bookId: 101
+ *         borrowerId: 5
+ *         borrowDate: "2024-12-16T12:00:00Z"
+ *         dueDate: "2024-12-30T12:00:00Z"
+ *         returnDate: "2024-12-20T12:00:00Z"
+ *
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Borrower:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Unique identifier for the borrower.
+ *         name:
+ *           type: string
+ *           description: The name of the borrower.
+ *         email:
+ *           type: string
+ *           description: The email address of the borrower.
+ *         regDate:
+ *           type: string
+ *           format: date-time
+ *           description: The registration date of the borrower.
+ *           default: "2024-12-16T12:00:00Z"
+ *       required:
+ *         - name
+ *         - email
+ *       example:
+ *         id: 5
+ *         name: "John Doe"
+ *         email: "john.doe@example.com"
+ *         regDate: "2024-12-16T12:00:00Z"
+ */
 
 /**
  * @swagger
