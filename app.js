@@ -1,13 +1,50 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const sequelize = require("./config/database");
 const rateLimit = require("express-rate-limit");
 const booksRoutes = require("./routes/booksRoutes");
 const borrowersRoutes = require("./routes/borrowersRoutes");
 const borrowedBookRoutes = require("./routes/borrowedBookRoutes");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
+
+// CORS configuration to allow all origins
+const corsOptions = {
+  origin: "*", // Allow all origins
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// Swagger setup
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Library API",
+      version: "1.0.0",
+      description: "API for managing books, borrowers, and borrowed books",
+    },
+    servers: [
+      {
+        url: "http://localhost:5000",
+      },
+      {
+        url: "http://172.161.88.247:5000",
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Apply rate limiting to all requests
 const limiter = rateLimit({
