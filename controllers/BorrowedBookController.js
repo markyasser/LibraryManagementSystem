@@ -92,3 +92,16 @@ exports.returnBook = async (req, res) => {
     return res.status(500).json({ message: "An error occurred" });
   }
 };
+
+exports.getAllBorrowedBooks = async (req, res) => {
+  try {
+    const borrowedBooks = await BorrowedBook.findAll({
+      include: [Book, Borrower],
+    });
+
+    return res.status(200).json(borrowedBooks);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};

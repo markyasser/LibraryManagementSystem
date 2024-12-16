@@ -3,10 +3,8 @@ const borrowedBookController = require("../controllers/BorrowedBookController");
 
 const router = express.Router();
 
-// Borrow a book
+router.get("/", borrowedBookController.getAllBorrowedBooks);
 router.post("/borrow", borrowedBookController.borrowBook);
-
-// Return a book
 router.post("/return", borrowedBookController.returnBook);
 
 module.exports = router;

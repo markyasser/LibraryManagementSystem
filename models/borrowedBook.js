@@ -12,6 +12,7 @@ const BorrowedBook = sequelize.define(
     bookId: { type: DataTypes.INTEGER, allowNull: false },
     borrowerId: { type: DataTypes.INTEGER, allowNull: false },
     borrowDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    dueDate: { type: DataTypes.DATE },
     returnDate: { type: DataTypes.DATE },
   },
   { tableName: "BorrowedBooks", timestamps: false }
