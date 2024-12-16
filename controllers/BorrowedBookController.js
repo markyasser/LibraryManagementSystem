@@ -1,6 +1,7 @@
 const BorrowedBook = require("../models/borrowedBook");
 const Book = require("../models/book");
 const Borrower = require("../models/borrowers");
+const Sequelize = require("sequelize");
 
 // Borrow a book
 exports.borrowBook = async (req, res) => {
@@ -123,6 +124,49 @@ exports.getBorrowerBooks = async (req, res) => {
     });
 
     return res.status(200).json(borrowedBooks);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+const { Op } = require("sequelize"); // Ensure you are importing Op from Sequelize
+
+exports.getOverdueBorrows = async (req, res) => {
+  const { months } = req.body;
+  try {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Calculate the start date based on the number of months
+    const startDate = new Date();
+    startDate.setMonth(currentDate.getMonth() - months);
+
+    const overdueBorrows = await BorrowedBook.findAll({
+      where: {
+        // The borrow is either overdue (returnDate is null and current date > dueDate)
+        [Op.or]: [
+          {
+            dueDate: {
+              [Op.lt]: currentDate, // current date > dueDate
+            },
+            returnDate: null,
+          },
+          {
+            returnDate: {
+              [Op.gt]: Sequelize.col("dueDate"), // return date > due date
+            },
+          },
+        ],
+        // Only include borrows from the last 'months' months
+        borrowDate: {
+          [Op.gt]: startDate, // filter borrows created in the last 'months' months
+        },
+      },
+      include: [Book, Borrower],
+    });
+
+    return res.status(200).json(overdueBorrows);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "An error occurred" });
