@@ -22,6 +22,7 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
+const currentHost = process.env.HOST || "http://localhost";
 // Swagger setup
 const swaggerOptions = {
   definition: {
@@ -33,10 +34,10 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5000", // Local server (Development)
+        url: currentHost + ":5000", // Test server (Staging)
       },
       {
-        url: process.env.TEST_SERVER || "http://localhost" + ":5000", // Test server (Staging)
+        url: "http://localhost:5000", // Local server (Development)
       },
     ],
   },
