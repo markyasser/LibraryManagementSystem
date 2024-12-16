@@ -4,6 +4,11 @@ const Borrower = require("../models/borrowers");
 exports.createBorrower = async (req, res, next) => {
   try {
     const { name, email } = req.body;
+    // Check if the borrower already exists
+    const existingBorrower = await Borrower.findOne({ where: { email } });
+    if (existingBorrower) {
+      return res.status(400).json({ message: "This Borrower already exists" });
+    }
     const newBorrower = await Borrower.create({ name, email });
     res
       .status(201)
@@ -28,6 +33,22 @@ exports.updateBorrower = async (req, res, next) => {
   try {
     const borrowerId = req.params.id;
     const updatedData = req.body;
+
+    // Check if the borrower exists
+    const borrower = await Borrower.findByPk(borrowerId);
+    if (!borrower) {
+      return res.status(404).json({ message: "Borrower not found" });
+    }
+
+    // Check if the email is already taken
+    if (updatedData.email) {
+      const existingBorrower = await Borrower.findOne({
+        where: { email: updatedData.email },
+      });
+      if (existingBorrower && existingBorrower.id != borrowerId) {
+        return res.status(400).json({ message: "This email is already taken" });
+      }
+    }
 
     const [updated] = await Borrower.update(updatedData, {
       where: { id: borrowerId },

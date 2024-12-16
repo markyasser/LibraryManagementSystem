@@ -4,7 +4,7 @@ const Borrower = require("../models/borrowers");
 
 // Borrow a book
 exports.borrowBook = async (req, res) => {
-  const { bookId, borrowerId } = req.body;
+  const { bookId, borrowerId, dueDate } = req.body;
 
   try {
     // Check if the book exists
@@ -39,6 +39,7 @@ exports.borrowBook = async (req, res) => {
     const borrowedBook = await BorrowedBook.create({
       bookId,
       borrowerId,
+      dueDate: dueDate,
       borrowDate: new Date(),
     });
 
@@ -97,6 +98,28 @@ exports.getAllBorrowedBooks = async (req, res) => {
   try {
     const borrowedBooks = await BorrowedBook.findAll({
       include: [Book, Borrower],
+    });
+
+    return res.status(200).json(borrowedBooks);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+exports.getBorrowerBooks = async (req, res) => {
+  const { borrowerId } = req.params;
+
+  try {
+    // Check if the borrower exists
+    const borrower = await Borrower.findByPk(borrowerId);
+    if (!borrower) {
+      return res.status(404).json({ message: "Borrower not found" });
+    }
+
+    const borrowedBooks = await BorrowedBook.findAll({
+      where: { borrowerId },
+      include: [Book],
     });
 
     return res.status(200).json(borrowedBooks);

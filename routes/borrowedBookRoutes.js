@@ -71,6 +71,7 @@ router.get("/", borrowedBookController.getAllBorrowedBooks);
  *             required:
  *               - bookId
  *               - borrowerId
+ *               - dueDate
  *             properties:
  *               bookId:
  *                 type: integer
@@ -78,6 +79,10 @@ router.get("/", borrowedBookController.getAllBorrowedBooks);
  *               borrowerId:
  *                 type: integer
  *                 description: ID of the borrower who is borrowing the book.
+ *               dueDate:
+ *                 type: string
+ *                 format: date-time
+ *                 description: The due date for returning the book.
  *     responses:
  *       201:
  *         description: Book borrowed successfully
@@ -99,6 +104,9 @@ router.get("/", borrowedBookController.getAllBorrowedBooks);
  *                     borrowerId:
  *                       type: integer
  *                     borrowDate:
+ *                       type: string
+ *                       format: date-time
+ *                     returnDate:
  *                       type: string
  *                       format: date-time
  *       400:
@@ -159,11 +167,90 @@ router.post("/borrow", borrowedBookController.borrowBook);
  *                     returnDate:
  *                       type: string
  *                       format: date-time
+ *                     dueDate:
+ *                       type: string
+ *                       format: date-time
  *       404:
  *         description: No active borrowing record found
  *       500:
  *         description: Internal server error
  */
 router.post("/return", borrowedBookController.returnBook);
+
+/**
+ * @swagger
+ * /borrowedBooks/{borrowerId}:
+ *   get:
+ *     summary: Get all borrowed books by a specific borrower
+ *     description: Retrieves a list of all books borrowed by a specific borrower.
+ *     tags: [BorrowedBooks]
+ *     parameters:
+ *       - in: path
+ *         name: borrowerId
+ *         required: true
+ *         description: ID of the borrower
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: List of books borrowed by the borrower
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID of the borrowed book entry
+ *                   bookId:
+ *                     type: integer
+ *                     description: ID of the borrowed book
+ *                   borrowerId:
+ *                     type: integer
+ *                     description: ID of the borrower
+ *                   borrowDate:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date the book was borrowed
+ *                   returnDate:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date the book was returned (if applicable)
+ *                   dueDate:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The due date for returning the book
+ *                   book:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: ID of the book
+ *                       title:
+ *                         type: string
+ *                         description: Title of the book
+ *                       author:
+ *                         type: string
+ *                         description: Author of the book
+ *                       availableQty:
+ *                         type: integer
+ *                         description: Available quantity of the book
+ *                   borrower:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: ID of the borrower
+ *                       name:
+ *                         type: string
+ *                         description: Name of the borrower
+ *       404:
+ *         description: Borrower not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:borrowerId", borrowedBookController.getBorrowerBooks);
 
 module.exports = router;
