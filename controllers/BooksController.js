@@ -4,8 +4,14 @@ const { Op } = require("sequelize");
 // Create a new book
 exports.createBook = async (req, res, next) => {
   try {
-    const { author, ISBN, availableQty, location } = req.body;
-    const newBook = await Book.create({ author, ISBN, availableQty, location });
+    const { title, author, ISBN, availableQty, location } = req.body;
+    const newBook = await Book.create({
+      title,
+      author,
+      ISBN,
+      availableQty,
+      location,
+    });
     res.status(201).json({ message: "Book created", book: newBook });
   } catch (err) {
     next(err);
