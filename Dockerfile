@@ -12,6 +12,8 @@ RUN npm install
 
 # Copy the rest of the application
 COPY . .
+COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 # Expose the application port
 EXPOSE 8080

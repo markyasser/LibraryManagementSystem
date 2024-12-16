@@ -12,6 +12,7 @@ services:
       - DB_NAME=library
     depends_on:
       - db
+    command: ["./wait-for-it.sh", "db:3306", "--", "npm", "start"]
 
   db:
     image: mysql:8.0
