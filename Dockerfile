@@ -1,22 +1,23 @@
-# Use Node.js LTS as base image
-FROM node:18-alpine
+# Use your preferred base image (assuming Node.js in this example)
+FROM node:18
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json (if you have them)
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application
+# Copy the rest of your application files
 COPY . .
+
+# Copy the wait-for-it script into the container
 COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
+
+# Make sure it's executable
 RUN chmod +x /usr/local/bin/wait-for-it.sh
 
-# Expose the application port
-EXPOSE 8080
-
-# Command to start the application
-CMD ["npm", "start"]
+# Set the default command for the container
+CMD ["./wait-for-it.sh", "db:3306", "--", "npm", "start"]
