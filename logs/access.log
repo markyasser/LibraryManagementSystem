@@ -1,9 +1,0 @@
-::1 | 17/Dec/2024:16:41:48 +0000 | GET | /api-docs/ | Auth Provided: No | Request Type: other | Files Provided: No | 304 | 47.377ms
-::1 | 17/Dec/2024:16:41:48 +0000 | GET | /api-docs/swagger-ui-bundle.js | Auth Provided: No | Request Type: other | Files Provided: No | 304 | 2.583ms
-::1 | 17/Dec/2024:16:41:48 +0000 | GET | /api-docs/swagger-ui.css | Auth Provided: No | Request Type: other | Files Provided: No | 304 | 1.774ms
-::1 | 17/Dec/2024:16:41:48 +0000 | GET | /api-docs/swagger-ui-init.js | Auth Provided: No | Request Type: other | Files Provided: No | 304 | 0.278ms
-::1 | 17/Dec/2024:16:41:48 +0000 | GET | /api-docs/swagger-ui-standalone-preset.js | Auth Provided: No | Request Type: other | Files Provided: No | 304 | 2.928ms
-::1 | 17/Dec/2024:16:41:59 +0000 | POST | /borrowedBooks/return | Auth Provided: No | Request Type: JSON | Files Provided: No | 500 | 237.476ms
-::1 | 17/Dec/2024:16:43:05 +0000 | POST | /borrowedBooks/return | Auth Provided: No | Request Type: JSON | Files Provided: No | 500 | 37.754ms
-::1 | 17/Dec/2024:16:43:57 +0000 | POST | /borrowedBooks/return | Auth Provided: No | Request Type: JSON | Files Provided: No | 500 | 28.004ms
-::1 | 17/Dec/2024:16:44:19 +0000 | POST | /borrowedBooks/return | Auth Provided: No | Request Type: JSON | Files Provided: No | 404 | 21.201ms
