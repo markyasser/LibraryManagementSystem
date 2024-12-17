@@ -2,6 +2,7 @@ const BorrowedBook = require("../models/borrowedBook");
 const Book = require("../models/book");
 const Borrower = require("../models/borrowers");
 const Sequelize = require("sequelize");
+const { Op } = require("sequelize"); // Ensure you are importing Op from Sequelize
 
 // Borrow a book
 exports.borrowBook = async (req, res) => {
@@ -53,15 +54,16 @@ exports.borrowBook = async (req, res) => {
       borrowedBook,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "An error occurred" });
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
 
 // Return a book
 exports.returnBook = async (req, res) => {
   const { bookId, borrowerId } = req.body;
-
   try {
     // Find the borrowed book entry
     const borrowedBook = await BorrowedBook.findOne({
@@ -90,8 +92,10 @@ exports.returnBook = async (req, res) => {
       borrowedBook,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "An error occurred" });
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
 
@@ -103,8 +107,10 @@ exports.getAllBorrowedBooks = async (req, res) => {
 
     return res.status(200).json(borrowedBooks);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "An error occurred" });
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
 
@@ -125,12 +131,12 @@ exports.getBorrowerBooks = async (req, res) => {
 
     return res.status(200).json(borrowedBooks);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "An error occurred" });
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
-
-const { Op } = require("sequelize"); // Ensure you are importing Op from Sequelize
 
 exports.getOverdueBorrows = async (req, res) => {
   const { months } = req.body;
@@ -168,7 +174,10 @@ exports.getOverdueBorrows = async (req, res) => {
 
     return res.status(200).json(overdueBorrows);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "An error occurred" });
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        "A database error occurred while processing your request. Please check the request body and try again.",
+    });
   }
 };

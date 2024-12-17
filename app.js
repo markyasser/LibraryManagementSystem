@@ -9,8 +9,12 @@ const borrowersRoutes = require("./routes/borrowersRoutes");
 const borrowedBookRoutes = require("./routes/borrowedBookRoutes");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
+const morgan = require("morgan");
+const { customMorgan, logStream } = require("./config/logger"); // Import the custom logger
 const app = express();
+
+// Use the custom logger
+app.use(morgan(customMorgan, { stream: logStream }));
 
 // CORS configuration to allow all origins
 const corsOptions = {

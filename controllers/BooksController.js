@@ -14,7 +14,11 @@ exports.createBook = async (req, res, next) => {
     });
     res.status(201).json({ message: "Book created", book: newBook });
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        "A database error occurred while processing your request. Please check the request body and try again.",
+    });
   }
 };
 
@@ -24,7 +28,11 @@ exports.getAllBooks = async (req, res, next) => {
     const books = await Book.findAll();
     res.status(200).json({ books });
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        "A database error occurred while processing your request. Please check the request body and try again.",
+    });
   }
 };
 
@@ -41,7 +49,11 @@ exports.updateBook = async (req, res, next) => {
       res.status(404).json({ message: "Book not found" });
     }
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        "A database error occurred while processing your request. Please check the request body and try again.",
+    });
   }
 };
 
@@ -57,7 +69,11 @@ exports.deleteBook = async (req, res, next) => {
       res.status(404).json({ message: "Book not found" });
     }
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        "A database error occurred while processing your request. Please check the request body and try again.",
+    });
   }
 };
 
@@ -90,6 +106,10 @@ exports.searchBooks = async (req, res, next) => {
 
     res.status(200).json({ books });
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        "A database error occurred while processing your request. Please check the request body and try again.",
+    });
   }
 };

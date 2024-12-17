@@ -14,7 +14,10 @@ exports.createBorrower = async (req, res, next) => {
       .status(201)
       .json({ message: "Borrower created", borrower: newBorrower });
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
 
@@ -24,7 +27,10 @@ exports.getAllBorrowers = async (req, res, next) => {
     const borrowers = await Borrower.findAll();
     res.status(200).json({ borrowers });
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
 
@@ -59,7 +65,10 @@ exports.updateBorrower = async (req, res, next) => {
       res.status(404).json({ message: "Borrower not found" });
     }
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
 
@@ -75,6 +84,9 @@ exports.deleteBorrower = async (req, res, next) => {
       res.status(404).json({ message: "Borrower not found" });
     }
   } catch (err) {
-    next(err);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: "A database error occurred while processing your request.",
+    });
   }
 };
