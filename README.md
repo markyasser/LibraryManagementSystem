@@ -6,7 +6,7 @@ The system supports management of:
 
 - Books
 - Borrowers
-- Borrowing and returning books  
+- Borrowing and returning books
   Additionally, access logs are saved for all incoming API requests.
 
 The app is **containerized using Docker**, with a **Docker Compose** file for orchestrating both the application and the MySQL database.  
@@ -15,15 +15,19 @@ A test server has been deployed on **Azure**, and the Swagger API documentation 
 
 ---
 
+## ER Diagram
+
+![alt text](./assets/ERD.png)
+
 ## Features
 
 ### Endpoints Overview
 
-| **Resource**   | **Endpoint**     | **Description**                  |
-| -------------- | ---------------- | -------------------------------- |
-| Books          | `/books`         | CRUD operations for books        |
-| Borrowers      | `/borrowers`     | CRUD operations for borrowers    |
-| Borrowed Books | `/BorrowedBooks` | Manage borrowing/returning books |
+| **Resource** | **Endpoint** | **Description**                  |
+| ------------ | ------------ | -------------------------------- |
+| Books        | `/books`     | CRUD operations for books        |
+| Borrowers    | `/borrowers` | CRUD operations for borrowers    |
+| Book Loans   | `/bookLoans` | Manage borrowing/returning books |
 
 ### Access Logs
 
@@ -48,4 +52,56 @@ A test server has been deployed on **Azure**, and the Swagger API documentation 
 ├── .env                # Environment variables
 ├── install.sh          # Script to install docker dependencies on test server
 └── wait-for-it.sh      # Script to wait for MySQL container to be ready
+```
+
+## Getting Started
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/markyasser/LibraryManagementSystem.git
+cd LibraryManagementSystem
+```
+
+2. Install the dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory and add the following environment variables:
+
+```plaintext
+# Port number
+PORT=5000
+HOST=localhost (or server ip)
+DB_HOST=localhost (or db in case of Docker)
+DB_USER=root
+DB_PASSWORD=root
+DB_NAME=library
+DB_PORT=3306
+```
+
+4. Start the application:
+
+```bash
+npm start
+```
+
+The app should now be running on [http://localhost:5000](http://localhost:5000).
+
+### Docker
+
+1. install Docker and Docker Compose on your machine.
+
+```bash
+./install.sh
+```
+
+2. Start the application using Docker Compose:
+
+```bash
+docker-compose up --build -d
 ```

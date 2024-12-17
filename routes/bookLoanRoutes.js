@@ -1,15 +1,56 @@
 const express = require("express");
-const borrowedBookController = require("../controllers/BorrowedBookController");
+const bookLoansController = require("../controllers/BookLoansController");
 
 const router = express.Router();
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     BookLoans:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Unique identifier for the borrowed book entry.
+ *         bookId:
+ *           type: integer
+ *           description: The ID of the book being borrowed.
+ *         borrowerId:
+ *           type: integer
+ *           description: The ID of the borrower who borrowed the book.
+ *         borrowDate:
+ *           type: string
+ *           format: date-time
+ *           description: The date when the book was borrowed.
+ *           default: "2024-12-16T12:00:00Z"
+ *         dueDate:
+ *           type: string
+ *           format: date-time
+ *           description: The date when the book is due to be returned.
+ *         returnDate:
+ *           type: string
+ *           format: date-time
+ *           description: The date when the book was returned.
+ *       required:
+ *         - bookId
+ *         - borrowerId
+ *       example:
+ *         id: 1
+ *         bookId: 101
+ *         borrowerId: 5
+ *         borrowDate: "2024-12-16T12:00:00Z"
+ *         dueDate: "2024-12-30T12:00:00Z"
+ *         returnDate: "2024-12-20T12:00:00Z"
+ *
+ */
 
 /**
  * @swagger
- * /borrowedBooks:
+ * /bookLoans:
  *   get:
  *     summary: Get all borrowed books
  *     description: Retrieves a list of all borrowed books with borrower details.
- *     tags: [BorrowedBooks]
+ *     tags: [BookLoans]
  *     responses:
  *       200:
  *         description: List of all borrowed books
@@ -53,14 +94,14 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get("/", borrowedBookController.getAllBorrowedBooks);
+router.get("/", bookLoansController.getAllBookLoans);
 /**
  * @swagger
- * /borrowedBooks/{borrowerId}:
+ * /bookLoans/{borrowerId}:
  *   get:
  *     summary: Get all borrowed books by a specific borrower
  *     description: Retrieves a list of all books borrowed by a specific borrower.
- *     tags: [BorrowedBooks]
+ *     tags: [BookLoans]
  *     parameters:
  *       - in: path
  *         name: borrowerId
@@ -128,15 +169,15 @@ router.get("/", borrowedBookController.getAllBorrowedBooks);
  *       500:
  *         description: Internal server error
  */
-router.get("/:borrowerId", borrowedBookController.getBorrowerBooks);
+router.get("/:borrowerId", bookLoansController.getBorrowerBooks);
 
 /**
  * @swagger
- * /borrowedBooks/overdue:
+ * /bookLoans/overdue:
  *   post:
  *     summary: Get all overdue borrows based on due date and return date
  *     description: Fetches borrows where the `returnDate` is either null and the current date is greater than the `dueDate`, or the `returnDate` is greater than the `dueDate`. Optionally, you can filter by the number of months.
- *     tags: [BorrowedBooks]
+ *     tags: [BookLoans]
  *     requestBody:
  *       required: true
  *       content:
@@ -194,15 +235,15 @@ router.get("/:borrowerId", borrowedBookController.getBorrowerBooks);
  *       500:
  *         description: Internal Server Error. Something went wrong on the server side.
  */
-router.post("/overdue", borrowedBookController.getOverdueBorrows);
+router.post("/overdue", bookLoansController.getOverdueBorrows);
 
 /**
  * @swagger
- * /borrowedBooks/borrow:
+ * /bookLoans/borrow:
  *   post:
  *     summary: Borrow a book
  *     description: Allows a borrower to borrow a book if it's available and not already borrowed.
- *     tags: [BorrowedBooks]
+ *     tags: [BookLoans]
  *     requestBody:
  *       required: true
  *       content:
@@ -257,15 +298,15 @@ router.post("/overdue", borrowedBookController.getOverdueBorrows);
  *       500:
  *         description: Internal server error
  */
-router.post("/borrow", borrowedBookController.borrowBook);
+router.post("/borrow", bookLoansController.borrowBook);
 
 /**
  * @swagger
- * /borrowedBooks/return:
+ * /bookLoans/return:
  *   post:
  *     summary: Return a borrowed book
  *     description: Allows a borrower to return a borrowed book.
- *     tags: [BorrowedBooks]
+ *     tags: [BookLoans]
  *     requestBody:
  *       required: true
  *       content:
@@ -316,6 +357,6 @@ router.post("/borrow", borrowedBookController.borrowBook);
  *       500:
  *         description: Internal server error
  */
-router.post("/return", borrowedBookController.returnBook);
+router.post("/return", bookLoansController.returnBook);
 
 module.exports = router;

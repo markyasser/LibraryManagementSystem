@@ -6,7 +6,7 @@ const sequelize = require("./config/database");
 const rateLimit = require("express-rate-limit");
 const booksRoutes = require("./routes/booksRoutes");
 const borrowersRoutes = require("./routes/borrowersRoutes");
-const borrowedBookRoutes = require("./routes/borrowedBookRoutes");
+const bookLoanRoutes = require("./routes/bookLoanRoutes");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const morgan = require("morgan");
@@ -26,7 +26,7 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-const currentHost = process.env.HOST || "http://localhost";
+const currentHost = process.env.HOST || "localhost";
 // Swagger setup
 const swaggerOptions = {
   definition: {
@@ -38,7 +38,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: currentHost + ":5000", // Test server (Staging)
+        url: "http://" + currentHost + ":5000", // Test server (Staging)
       },
       {
         url: "http://localhost:5000", // Local server (Development)
@@ -65,7 +65,7 @@ app.use(bodyParser.json());
 
 app.use("/books", booksRoutes);
 app.use("/borrowers", borrowersRoutes);
-app.use("/borrowedBooks", borrowedBookRoutes);
+app.use("/bookLoans", bookLoanRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {

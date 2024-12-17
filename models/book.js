@@ -8,7 +8,7 @@ const Book = sequelize.define(
     title: { type: DataTypes.STRING, allowNull: false },
     author: { type: DataTypes.STRING, allowNull: false },
     ISBN: { type: DataTypes.STRING, unique: true, allowNull: false },
-    availableQty: { type: DataTypes.INTEGER, defaultValue: 0 },
+    available_qty: { type: DataTypes.INTEGER, defaultValue: 0 },
     location: { type: DataTypes.STRING },
   },
   { tableName: "Books", timestamps: false }

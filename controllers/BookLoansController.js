@@ -1,4 +1,4 @@
-const BorrowedBook = require("../models/borrowedBook");
+const BookLoans = require("../models/bookLoans");
 const Book = require("../models/book");
 const Borrower = require("../models/borrowers");
 const Sequelize = require("sequelize");
@@ -27,7 +27,7 @@ exports.borrowBook = async (req, res) => {
     }
 
     // Check if the book is already borrowed by this borrower and not returned
-    const isBorrowed = await BorrowedBook.findOne({
+    const isBorrowed = await BookLoans.findOne({
       where: { bookId, borrowerId, returnDate: null },
     });
 
@@ -38,7 +38,7 @@ exports.borrowBook = async (req, res) => {
     }
 
     // Create a borrowed book entry
-    const borrowedBook = await BorrowedBook.create({
+    const bookLoan = await BookLoans.create({
       bookId,
       borrowerId,
       dueDate: dueDate,
@@ -51,7 +51,7 @@ exports.borrowBook = async (req, res) => {
 
     return res.status(201).json({
       message: "Book borrowed successfully",
-      borrowedBook,
+      BookLoan: bookLoan,
     });
   } catch (error) {
     return res.status(500).json({
@@ -66,19 +66,19 @@ exports.returnBook = async (req, res) => {
   const { bookId, borrowerId } = req.body;
   try {
     // Find the borrowed book entry
-    const borrowedBook = await BorrowedBook.findOne({
-      where: { bookId, borrowerId, returnDate: null },
+    const bookLoan = await BookLoans.findOne({
+      where: { bookId, borrowerId, return_date: null },
     });
 
-    if (!borrowedBook) {
+    if (!bookLoan) {
       return res
         .status(404)
         .json({ message: "No active borrowing record found" });
     }
 
     // Update the return date
-    borrowedBook.returnDate = new Date();
-    await borrowedBook.save();
+    bookLoan.returnDate = new Date();
+    await bookLoan.save();
 
     // Increment the available quantity of the book
     const book = await Book.findByPk(bookId);
@@ -89,7 +89,7 @@ exports.returnBook = async (req, res) => {
 
     return res.status(200).json({
       message: "Book returned successfully",
-      borrowedBook,
+      BookLoan: bookLoan,
     });
   } catch (error) {
     return res.status(500).json({
@@ -99,13 +99,13 @@ exports.returnBook = async (req, res) => {
   }
 };
 
-exports.getAllBorrowedBooks = async (req, res) => {
+exports.getAllBookLoans = async (req, res) => {
   try {
-    const borrowedBooks = await BorrowedBook.findAll({
+    const bookLoans = await BookLoans.findAll({
       include: [Book, Borrower],
     });
 
-    return res.status(200).json(borrowedBooks);
+    return res.status(200).json({ BookLoans: bookLoans });
   } catch (error) {
     return res.status(500).json({
       error: "Internal Server Error",
@@ -124,12 +124,12 @@ exports.getBorrowerBooks = async (req, res) => {
       return res.status(404).json({ message: "Borrower not found" });
     }
 
-    const borrowedBooks = await BorrowedBook.findAll({
+    const bookLoans = await BookLoans.findAll({
       where: { borrowerId },
       include: [Book],
     });
 
-    return res.status(200).json(borrowedBooks);
+    return res.status(200).json(bookLoans);
   } catch (error) {
     return res.status(500).json({
       error: "Internal Server Error",
@@ -148,7 +148,7 @@ exports.getOverdueBorrows = async (req, res) => {
     const startDate = new Date();
     startDate.setMonth(currentDate.getMonth() - months);
 
-    const overdueBorrows = await BorrowedBook.findAll({
+    const overdueBorrows = await BookLoans.findAll({
       where: {
         // The borrow is either overdue (returnDate is null and current date > dueDate)
         [Op.or]: [

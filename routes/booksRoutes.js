@@ -44,6 +44,99 @@ const router = express.Router();
 /**
  * @swagger
  * /books:
+ *   get:
+ *     summary: Get all books
+ *     description: Retrieve a list of all books in the library.
+ *     tags:
+ *      - Books
+ *     responses:
+ *       200:
+ *         description: A list of all books
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       author:
+ *                         type: string
+ *                       ISBN:
+ *                         type: string
+ *                       availableQty:
+ *                         type: integer
+ *                       location:
+ *                         type: string
+ */
+router.get("/", booksController.getAllBooks);
+
+/**
+ * @swagger
+ * /books/search:
+ *   get:
+ *     summary: Search for books by title, author, or ISBN
+ *     description: Search for books in the library by title, author, or ISBN using query parameters.
+ *     tags:
+ *      - Books
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         required: false
+ *         description: Title of the book.
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: author
+ *         required: false
+ *         description: Author of the book.
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: ISBN
+ *         required: false
+ *         description: ISBN of the book.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of books matching the search criteria
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       author:
+ *                         type: string
+ *                       ISBN:
+ *                         type: string
+ *                       availableQty:
+ *                         type: integer
+ *                       location:
+ *                         type: string
+ *       404:
+ *         description: No books found matching the search criteria
+ */
+router.get("/search", booksController.searchBooks);
+
+/**
+ * @swagger
+ * /books:
  *   post:
  *     summary: Create a new book
  *     description: Add a new book with details like title, author, ISBN, available quantity, and shelf location.
@@ -107,42 +200,6 @@ const router = express.Router();
  *         description: Invalid input
  */
 router.post("/", booksController.createBook); // title, author, ISBN, available quantity, and shelf location.
-
-/**
- * @swagger
- * /books:
- *   get:
- *     summary: Get all books
- *     description: Retrieve a list of all books in the library.
- *     tags:
- *      - Books
- *     responses:
- *       200:
- *         description: A list of all books
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 books:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                       title:
- *                         type: string
- *                       author:
- *                         type: string
- *                       ISBN:
- *                         type: string
- *                       availableQty:
- *                         type: integer
- *                       location:
- *                         type: string
- */
-router.get("/", booksController.getAllBooks);
 
 /**
  * @swagger
@@ -213,62 +270,5 @@ router.put("/:id", booksController.updateBook);
  *         description: Book not found
  */
 router.delete("/:id", booksController.deleteBook);
-
-/**
- * @swagger
- * /books/search:
- *   get:
- *     summary: Search for books by title, author, or ISBN
- *     description: Search for books in the library by title, author, or ISBN using query parameters.
- *     tags:
- *      - Books
- *     parameters:
- *       - in: query
- *         name: title
- *         required: false
- *         description: Title of the book.
- *         schema:
- *           type: string
- *       - in: query
- *         name: author
- *         required: false
- *         description: Author of the book.
- *         schema:
- *           type: string
- *       - in: query
- *         name: ISBN
- *         required: false
- *         description: ISBN of the book.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: A list of books matching the search criteria
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 books:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                       title:
- *                         type: string
- *                       author:
- *                         type: string
- *                       ISBN:
- *                         type: string
- *                       availableQty:
- *                         type: integer
- *                       location:
- *                         type: string
- *       404:
- *         description: No books found matching the search criteria
- */
-router.get("/search", booksController.searchBooks);
 
 module.exports = router;

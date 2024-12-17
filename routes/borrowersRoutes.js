@@ -6,48 +6,6 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     BorrowedBook:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *           description: Unique identifier for the borrowed book entry.
- *         bookId:
- *           type: integer
- *           description: The ID of the book being borrowed.
- *         borrowerId:
- *           type: integer
- *           description: The ID of the borrower who borrowed the book.
- *         borrowDate:
- *           type: string
- *           format: date-time
- *           description: The date when the book was borrowed.
- *           default: "2024-12-16T12:00:00Z"
- *         dueDate:
- *           type: string
- *           format: date-time
- *           description: The date when the book is due to be returned.
- *         returnDate:
- *           type: string
- *           format: date-time
- *           description: The date when the book was returned.
- *       required:
- *         - bookId
- *         - borrowerId
- *       example:
- *         id: 1
- *         bookId: 101
- *         borrowerId: 5
- *         borrowDate: "2024-12-16T12:00:00Z"
- *         dueDate: "2024-12-30T12:00:00Z"
- *         returnDate: "2024-12-20T12:00:00Z"
- *
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
  *     Borrower:
  *       type: object
  *       properties:
@@ -74,6 +32,32 @@ const router = express.Router();
  *         email: "john.doe@example.com"
  *         regDate: "2024-12-16T12:00:00Z"
  */
+
+/**
+ * @swagger
+ * /borrowers:
+ *   get:
+ *     summary: Get all borrowers
+ *     description: Retrieves a list of all borrowers in the system.
+ *     operationId: getAllBorrowers
+ *     tags:
+ *       - Borrowers
+ *     responses:
+ *       200:
+ *         description: A list of borrowers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 borrowers:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Borrower'
+ *       404:
+ *         description: No borrowers found
+ */
+router.get("/", borrowersController.getAllBorrowers);
 
 /**
  * @swagger
@@ -108,32 +92,6 @@ const router = express.Router();
  *         description: Invalid request body
  */
 router.post("/", borrowersController.createBorrower);
-
-/**
- * @swagger
- * /borrowers:
- *   get:
- *     summary: Get all borrowers
- *     description: Retrieves a list of all borrowers in the system.
- *     operationId: getAllBorrowers
- *     tags:
- *       - Borrowers
- *     responses:
- *       200:
- *         description: A list of borrowers
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 borrowers:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Borrower'
- *       404:
- *         description: No borrowers found
- */
-router.get("/", borrowersController.getAllBorrowers);
 
 /**
  * @swagger
