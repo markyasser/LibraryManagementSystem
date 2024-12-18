@@ -27,18 +27,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const currentHost = process.env.HOST || "localhost";
-const localServer = "http://localhost:5000";
-const testServer = "http://" + currentHost + ":5000";
+const server = `http://${currentHost}:5000`;
 
-// Build servers array conditionally
-const servers = [
-  ...(localServer === testServer
-    ? [{ url: localServer }] // Include only one if they are the same
-    : [
-        { url: localServer }, // Local server
-        { url: testServer }, // Test server
-      ]),
-];
 // Swagger setup
 const swaggerOptions = {
   definition: {
@@ -48,7 +38,7 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "API for managing books, borrowers, and borrowed books",
     },
-    servers: servers,
+    servers: [{ url: server }],
   },
   apis: ["./routes/*.js"],
 };
